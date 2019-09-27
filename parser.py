@@ -1,5 +1,6 @@
 import requests 
 from bs4 import BeautifulSoup 
+import threading
 
 																		# эмуляция действия браузера 
 
@@ -11,10 +12,10 @@ counter = 0
 # https://kolesa.kz/cars/aktobe/?price[to]=7%20500%20000&year[from]=2012 
 # https://kolesa.kz/cars/aktobe/?price[to]=7500000&year[from]=2012&page=2 
 
-def Kolesa_parser(base_url, headers, total_page_number): 
+def Kolesa_parser(base_url, headers, total_page_number,shag_cicla,start_cicla): 
 	
 																				#loops for next page
-	for page in range(1, int(total_page_number)):
+	for page in range(start_cicla, int(total_page_number),shag_cicla):
 		session = requests.Session() 
 		request = session.get(base_url+str(page), headers=headers) 
 		if request.status_code == 200: 
@@ -121,16 +122,31 @@ def splitting_only_number(deshevle,adv_id,advka):
 
 
 def Calculation(deshevle,adv_id,advka):
-	if float(deshevle) >= 10:							#---------------PROCENT TUUUUUUUUUUUT!!!!------------------------
+	if float(deshevle) >= 20:							#---------------PROCENT TUUUUUUUUUUUT!!!!------------------------
 		print("good idea "+ "https://kolesa.kz/a/show/"+str(adv_id) + "   " + str(advka[0]) + " " + str(advka[1]) + str(advka[2]) + "  хозяин продает машину в режиме - " + str(advka[3]))
 	else:
 		print("This is not best offer, i am trying to find smth better:)")
 
 def main():
-	base_url = 'https://kolesa.kz/cars/aktobe/?auto-custom=2&year[from]=2012&price[to]=7%20000%20000' 
+	base_url = 'https://kolesa.kz/cars/?auto-car-grbody=2&auto-custom=2&auto-car-transm=2345&auto-car-volume[to]=3&year[from]=2007&price[to]=8%20000%20000' 
 	base_url = base_url + "&page="
-	total_page_number = 100
+	total_page_number = 300
 
-	Kolesa_parser(base_url,headers,total_page_number)
+	#Kolesa_parser(base_url,headers,total_page_number)
+	'''
+	a = threading.Thread(target=Kolesa_parser, args=(base_url,headers,total_page_number,3,1))
+	b = threading.Thread(target=Kolesa_parser, args=(base_url,headers,total_page_number,3,2))
+	c = threading.Thread(target=Kolesa_parser, args=(base_url,headers,total_page_number,3,3))
+	a.start()
+	b.start()
+	c.start()
+	'''
+	threads = list()
+	for index in range(1,11):
+		x = threading.Thread(target=Kolesa_parser, args=(base_url,headers,total_page_number,3,1))
+		threads.append(x)
+		x.start()
+
+
 if __name__ == '__main__':
     main()

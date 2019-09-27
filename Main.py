@@ -45,7 +45,7 @@ def Kolesa_parser(base_url, headers):
 
 def Opening(adv_id):
 	session = requests.Session()
-	url_inside='https://kolesa.kz/a/show/'
+	url_inside='https://kolesa.kz/cars/aktobe/?auto-custom=2&year[from]=2007&price[to]=7%20000%20000'
 	request = session.get(url_inside+adv_id, headers=headers)
 
 	if request.status_code == 200:
