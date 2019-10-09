@@ -122,30 +122,25 @@ def splitting_only_number(deshevle,adv_id,advka):
 
 
 def Calculation(deshevle,adv_id,advka):
-	if float(deshevle) >= 20:							#---------------PROCENT TUUUUUUUUUUUT!!!!------------------------
+	if float(deshevle) >= 15:							#---------------PROCENT TUUUUUUUUUUUT!!!!------------------------
 		print("good idea "+ "https://kolesa.kz/a/show/"+str(adv_id) + "   " + str(advka[0]) + " " + str(advka[1]) + str(advka[2]) + "  хозяин продает машину в режиме - " + str(advka[3]))
-	else:
-		print("This is not best offer, i am trying to find smth better:)")
-
-def main():
-	base_url = 'https://kolesa.kz/cars/?auto-car-grbody=2&auto-custom=2&auto-car-transm=2345&auto-car-volume[to]=3&year[from]=2007&price[to]=8%20000%20000' 
-	base_url = base_url + "&page="
-	total_page_number = 300
-
-	#Kolesa_parser(base_url,headers,total_page_number)
-	'''
-	a = threading.Thread(target=Kolesa_parser, args=(base_url,headers,total_page_number,3,1))
-	b = threading.Thread(target=Kolesa_parser, args=(base_url,headers,total_page_number,3,2))
-	c = threading.Thread(target=Kolesa_parser, args=(base_url,headers,total_page_number,3,3))
-	a.start()
-	b.start()
-	c.start()
-	'''
+#	else:
+#		print("This is not best offer, i am trying to find smth better:)")
+def cycle(base_url):
 	threads = list()
-	for index in range(1,11):
-		x = threading.Thread(target=Kolesa_parser, args=(base_url,headers,total_page_number,3,1))
+	total_page_number = 300
+	for index in range(1,9):
+		x = threading.Thread(target=Kolesa_parser, args=(base_url,headers,total_page_number,8,index))
 		threads.append(x)
 		x.start()
+
+def main():
+	base_url = 'https://kolesa.kz/cars/aktobe/?auto-custom=2&auto-car-transm=2345&auto-car-volume[to]=3&year[from]=2007&price[to]=8%20000%20000' 
+	base_url = base_url + "&page="
+	
+
+	#Kolesa_parser(base_url,headers,total_page_number)
+	cycle(base_url)
 
 
 if __name__ == '__main__':
